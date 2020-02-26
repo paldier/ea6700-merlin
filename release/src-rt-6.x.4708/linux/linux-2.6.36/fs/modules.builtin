@@ -1,0 +1,8 @@
+kernel/fs/configfs/configfs.ko
+kernel/fs/fuse/fuse.ko
+kernel/fs/nls/nls_base.ko
+kernel/fs/nls/nls_utf8.ko
+kernel/fs/quota/quota_v2.ko
+kernel/fs/quota/quota_tree.ko
+kernel/fs/squashfs/squashfs.ko
+kernel/fs/ubifs/ubifs.ko

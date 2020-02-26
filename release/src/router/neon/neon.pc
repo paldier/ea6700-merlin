@@ -1,0 +1,11 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=/usr/lib
+includedir=${prefix}/include
+
+Name: neon
+Description: HTTP/WebDAV client library
+Version: 0.30.2
+Libs: -L${libdir} -lneon 
+Libs.private:  -lz -lssl -lcrypto   -L/home/paldier/68u/release/src-rt-6.x.4708/router/arm-uclibc/stage/usr/lib -lxml2 -lz -lm
+Cflags: -I${includedir}/neon  -D_LARGEFILE64_SOURCE -DNE_LFS

@@ -1,0 +1,10 @@
+kernel/drivers/net/ppp_generic.ko
+kernel/drivers/net/ppp_async.ko
+kernel/drivers/net/ppp_synctty.ko
+kernel/drivers/net/ppp_mppe.ko
+kernel/drivers/net/pppox.ko
+kernel/drivers/net/pppoe.ko
+kernel/drivers/net/pppox.ko
+kernel/drivers/net/pppox.ko
+kernel/drivers/net/pptp.ko
+kernel/drivers/net/slhc.ko
