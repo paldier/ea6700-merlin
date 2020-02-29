@@ -1,1 +1,0 @@
-/home/paldier/68u/release/src/router/usbmode/CMakeFiles/usbmode.dir

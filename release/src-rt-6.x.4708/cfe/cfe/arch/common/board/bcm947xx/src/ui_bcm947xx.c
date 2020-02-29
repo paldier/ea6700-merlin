@@ -219,6 +219,9 @@ check_trx(char *trx_name)
 	int first_read = 1;
 	unsigned int len, count;
 
+#if defined(RTAC3100) || defined(RTAC3200) || defined(EA6700)
+	return 0;//we don't want to wait 120-180s, just return 0
+#endif
 	/* Open header */
 	ret = fs_init("raw", &fsctx, trx_name);
 	if (ret)
@@ -958,3 +961,4 @@ ui_init_bcm947xxcmds(void)
 
 	return 0;
 }
+

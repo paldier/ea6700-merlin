@@ -411,6 +411,8 @@ static void cfe_autostart(void)
     int noauto = 0;
     char ch = 0;
 
+    xprintf("EA6700 CFE v1.1\n");
+    xprintf("build by paldier\n");
     env = env_getenv("STARTUP");
     if (!env) return;
 
@@ -635,3 +637,4 @@ void cfe_command_loop()
 	    }
 	}
 }
+

@@ -27,4 +27,5 @@ release/src/router/strongswan-5.2.1/src/*/Makefile
 release/src/router/strongswan-5.2.1/src/*/Makefile.in
 release/src-rt-6.x.4708/linux/linux-2.6.36/*/*/*/*.o
 release/src/router/arm-uclibc/
+release/src-rt-6.x.4708/shared/*.o
 

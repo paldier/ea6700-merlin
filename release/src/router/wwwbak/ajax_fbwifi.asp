@@ -1,1 +1,0 @@
-ajax_fbwifi_id = '<% nvram_get("fbwifi_id"); %>';

@@ -719,7 +719,11 @@ void generate_switch_para(void)
 		case MODEL_RTN18U:						/* 0  1  2  3  4 */
 		case MODEL_RTAC53U:
 		{				/* WAN L1 L2 L3 L4 CPU */	/*vision: WAN L1 L2 L3 L4 */
+#if defined(EA6700)
+			const int ports[SWPORT_COUNT] = { 4, 0, 1, 2, 3, 5 };
+#else
 			const int ports[SWPORT_COUNT] = { 0, 1, 2, 3, 4, 5 };
+#endif
 			int wancfg = (!nvram_match("switch_wantag", "none")&&!nvram_match("switch_wantag", "")&&!nvram_match("switch_wantag", "hinet")) ? SWCFG_DEFAULT : cfg;
 
 			wan_phyid = ports[0];	// record the phy num of the wan port on the case
@@ -7479,10 +7483,17 @@ unsigned int convert_vlan_entry(int tag_enable, int portset, char *tag_reg_val)
 	else if (model == MODEL_RTAC68U || model == MODEL_RTN18U ||
 		model == MODEL_RTN66U || model == MODEL_RTAC66U ||
 		model == MODEL_DSLAC68U) {
+#if defined(EA6700)
+		port_shift_bit[0] = 0;
+		port_shift_bit[1] = 1;
+		port_shift_bit[2] = 2;
+		port_shift_bit[3] = 3;
+#else
 		port_shift_bit[0] = 1;
 		port_shift_bit[1] = 2;
 		port_shift_bit[2] = 3;
 		port_shift_bit[3] = 4;
+#endif
 	}
 	/* P0 P1 P2 P3 P4 */
 	/* L1 L2 L3 L4 WAN */

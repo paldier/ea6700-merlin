@@ -90,7 +90,7 @@ OBJECTS		+= nflash.o
 endif
 
 # Default to lzma_4k
-COMPRESS	:= lzma_4k e
+COMPRESS	:= $(SRCBASE)/ctools/lzma_4k e
 
 ifneq ($(findstring lzma_4k,$(COMPRESS)),)
 CFLAGS		+= -DUSE_LZMA -DBCMLZMA
@@ -147,7 +147,10 @@ ifeq ($(RTAC87U), 1)
 	fi
 else
 ifeq ($(RTAC68U), 1)
-ifeq ($(BCM470XC0), 1)
+ifeq ($(EA6700), 1)
+	../../../../../ctools/nvserial -i cfez.bin -o cfe_rt-ac68u_ea6700.bin -s 00 rt-ac68u_ea6700_nvram.txt
+	cp cfe_rt-ac68u_ea6700.bin ../../../..
+else ifeq ($(BCM470XC0), 1)
 	../../../../../ctools/nvserial -i cfez.bin -o cfe_rt-ac68u_5003_c0.bin -s 00 rt-ac68u_5003_c0_nvram.txt
 	cp cfe_rt-ac68u_5003_c0.bin ../../../..
 else ifeq ($(BCM470XC0), 2)
@@ -250,3 +253,4 @@ clean:
 
 %.o : %.S
 	$(GCC) $(ASFLAGS) $(CFLAGS) -o $@ $<
+

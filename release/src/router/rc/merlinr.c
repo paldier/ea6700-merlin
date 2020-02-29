@@ -26,14 +26,14 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
-#include "merlinr.h"
+
 #include "rc.h"
 #include <shared.h>
 #include <shutils.h>
 #if defined(RTCONFIG_LANTIQ)
 #include <lantiq.h>
 #endif
-
+#include "merlinr.h"
 #include <curl/curl.h>
 
 void merlinr_insmod(){
@@ -59,6 +59,29 @@ void merlinr_insmod(){
 	eval("insmod", "xt_TPROXY");
 	eval("insmod", "xt_set");
 }
+#if defined(EA6700)
+void ea6700_check(){
+	if(!nvram_get("bl_version")){
+		char mac1[] = "C0:56:27:67:05:EA";
+		unsigned char mac_binary[6];
+		ether_atoe(mac1, mac_binary);
+		mac_binary[5]=mac_binary[5] +4;
+		ether_etoa(mac_binary, mac1);
+		system("dd if=/rom/cfe/ea6700.bin of=/dev/mtdblock0 2>/dev/null");
+		sleep(2);
+		merlinr_set("odmpid", "ASUS");
+		merlinr_set("secret_code", "1472583690");
+		merlinr_set("et0macaddr", nvram_safe_get("et0macaddr"));
+		merlinr_set("0:macaddr", nvram_safe_get("et0macaddr"));
+		merlinr_set("1:macaddr", mac1);
+		doSystem("mtd-erase2 asus");
+		if(!strcmp(nvram_safe_get("et0macaddr"), "C0:56:27:67:05:EA"))
+			logmessage("EA6700", "MAC设置失败，请手动修正");
+	}
+	if(strlen(nvram_get("secret_code")) < 6)
+		merlinr_set("secret_code", "1472583690");
+}
+#endif
 void merlinr_init()
 {
 	_dprintf("############################ MerlinR init #################################\n");
@@ -84,6 +107,7 @@ void tm1900_check(){
 	}
 }
 #endif
+
 void merlinr_init_done()
 {
 	_dprintf("############################ MerlinR init done #################################\n");
@@ -165,6 +189,8 @@ void merlinr_init_done()
 		nvram_set("modelname", "RTACRH26");
 #elif defined(RTAC85P)
 		nvram_set("modelname", "RTAC85P");
+#elif defined(EA6700)
+		nvram_set("modelname", "EA6700");
 #endif
 #if defined(R8000P) || defined(R7900P)
 	nvram_set("ping_target","www.taobao.com");
@@ -172,6 +198,16 @@ void merlinr_init_done()
 	nvram_commit();
 #if defined(RTAC68U) && !defined(SBRAC1900P) && !defined(EA6700)
 	tm1900_check();
+#endif
+#if defined(MERLINR_VER_MAJOR_B)
+	//华硕似乎实现了aimesh的webui和aimesh核心剥离，从而实现382和384共用一个webui，384则强制显示aimesh界面，禁掉它，防止误导
+	//disable aimesh webui,asus splits aimesh into two parts,aimesh webui and aimesh core
+	//aimesh core does not work in this firmware,so disable aimesh webui
+	del_rc_support("amasRouter");
+	del_rc_support("amas");
+#endif
+#if defined(EA6700)
+	ea6700_check();
 #endif
 }
 
@@ -587,5 +623,45 @@ void softcenter_eval(int sig)
 	}
 	char *eval_argv[] = { path, action, NULL };
 	_eval(eval_argv, NULL, 0, &pid);
+}
+#endif
+
+#if defined(EA6700)
+int GetPhyStatus2(int verbose)
+{
+	int ports[5];
+	int i, ret, lret=0, mask;
+	char out_buf[30];
+	ports[0]=4; ports[1]=0; ports[2]=1; ports[3]=2; ports[4]=3;
+
+	memset(out_buf, 0, 30);
+	for (i=0; i<5; i++) {
+		mask = 0;
+		mask |= 0x0001<<ports[i];
+		if (get_phy_status(mask)==0) {/*Disconnect*/
+			if (i==0)
+				sprintf(out_buf, "W0=X;");
+			else {
+				sprintf(out_buf, "%sL%d=X;", out_buf, i);
+			}
+		}
+		else { /*Connect, keep check speed*/
+			mask = 0;
+			mask |= (0x0003<<(ports[i]*2));
+			ret=get_phy_speed(mask);
+			ret>>=(ports[i]*2);
+			if (i==0)
+				sprintf(out_buf, "W0=%s;", (ret & 2)? "G":"M");
+			else {
+				lret = 1;
+				sprintf(out_buf, "%sL%d=%s;", out_buf, i, (ret & 2)? "G":"M");
+			}
+		}
+	}
+
+	if (verbose)
+		puts(out_buf);
+
+	return lret;
 }
 #endif

@@ -77,12 +77,14 @@ COMPRESSED_CFE := 1
 RESCUE_MODE := 1        # disable for tmp
 RGMII_P5 := 0
 DSLAC68U := 0
-RTAC68U := 0
+RTAC68U := 1
 RT4GAC68U := 0
 PATYPE := 0
 BCM470XC0 := 0
 MTDSIZE ?= 64
 DUAL_TRX := 0
+CFG_BCM_DEVINFO := 1
+EA6700 := 1
 
 # HND source base
 SRCBASE := $(shell cd ../../../.. && pwd)

@@ -66,7 +66,6 @@ install:
 	install -m 0755 jffsinit.sh $(INSTALLDIR)/usr/sbin
 	install -m 0755 plugin.sh $(INSTALLDIR)/usr/sbin
 	install -m 0755 helper.sh $(INSTALLDIR)/usr/sbin
-	install -m 0755 key.asp  $(INSTALLDIR)/www
 	install -m 0755 i18n.js $(INSTALLDIR)/www/js
 	install -m 0755 scCN.json $(INSTALLDIR)/www/res
 	install -m 0755 scEN.json $(INSTALLDIR)/www/res

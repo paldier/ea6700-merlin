@@ -250,7 +250,11 @@ endif
 
 ifeq ($(RTAC68U),y)
 	mkdir -p $(INSTALLDIR)/rom/cfe
-ifneq ($(SBRAC1900P),y)
+ifeq ($(SBRAC1900P),y)
+	cp -rf cfe/sbrac1900p.bin $(INSTALLDIR)/rom/cfe
+else ifeq ($(EA6700),y)
+	cp -rf cfe/ea6700.bin $(INSTALLDIR)/rom/cfe
+else
 	cp -rf cfe/cfe_tmo.bin $(INSTALLDIR)/rom/cfe/
 	cp -rf cfe/cfe_1.0.2.0.bin $(INSTALLDIR)/rom/cfe
 	cp -rf cfe/cfe_1.0.2.0_esmt.bin $(INSTALLDIR)/rom/cfe

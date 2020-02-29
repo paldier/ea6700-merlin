@@ -7134,7 +7134,9 @@ int init_nvram(void)
 		nvram_set_int("led_wps_gpio", 0|GPIO_ACTIVE_LOW);
 #else // RT4GAC68U
 		if (!is_ac66u_v2_series()) {
+#if !defined(EA6700)
 			nvram_set_int("led_5g_gpio", 6|GPIO_ACTIVE_LOW);// 4360's fake led 5g
+#endif
 #ifdef RTCONFIG_LED_BTN
 			nvram_set_int("btn_led_gpio", 5);		// active high
 #endif
@@ -7149,14 +7151,24 @@ int init_nvram(void)
 			nvram_set_int("led_wps_gpio", 0|GPIO_ACTIVE_LOW);
 		}
 #endif  // RT4GAC68U
+#if defined(EA6700)
+		nvram_set_int("pwr_usb_gpio", 9);
+		//nvram_set_int("pwr_usb_gpio2", 10);
+		nvram_set_int("led_pwr_gpio", 6|GPIO_ACTIVE_LOW);
+#else
 		nvram_set_int("pwr_usb_gpio", 9|GPIO_ACTIVE_LOW);
 		nvram_set_int("btn_wps_gpio", 7|GPIO_ACTIVE_LOW);
+#endif
 		nvram_set_int("btn_rst_gpio", 11|GPIO_ACTIVE_LOW);
 		if (!is_ac66u_v2_series()) {
+#if !defined(EA6700)
 			nvram_set_int("led_pwr_gpio", 3|GPIO_ACTIVE_LOW);
+#endif
 			nvram_set_int("led_usb3_gpio", 14|GPIO_ACTIVE_LOW);
 #ifdef RTCONFIG_WIFI_TOG_BTN
+#if !defined(EA6700)
 			nvram_set_int("btn_wltog_gpio", 15|GPIO_ACTIVE_LOW);
+#endif
 #endif
 		} else {
 			nvram_set_int("led_pwr_gpio", 0|GPIO_ACTIVE_LOW);

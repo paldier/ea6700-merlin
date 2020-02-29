@@ -406,7 +406,7 @@ endif
 endif
 
 ifeq ($(RTCONFIG_FRS_LIVE_UPDATE),y)
-ifneq ($(MERLINR_NAME), $(filter $(MERLINR_NAME), K3 K3C R7900P SBRAC1900P RTAC68U))
+ifneq ($(MERLINR_NAME), $(filter $(MERLINR_NAME), K3 K3C R7900P SBRAC1900P RTAC68U EA6700))
 OBJS += frs_service.o
 endif
 endif
@@ -751,6 +751,9 @@ endif
 	@cd $(INSTALLDIR)/sbin && ln -sf rc reboot
 	@cd $(INSTALLDIR)/sbin && ln -sf rc halt
 	@cd $(INSTALLDIR)/sbin && ln -sf rc netool
+ifeq ($(K3),y)
+	@cd $(INSTALLDIR)/sbin && ln -sf rc k3screen
+endif
 ifeq ($(HND_ROUTER),y)
 	@cd $(INSTALLDIR)/sbin && ln -sf rc hnd-write
 	@cd $(INSTALLDIR)/sbin && ln -sf rc hnd-erase
@@ -1006,6 +1009,9 @@ endif
 	@cd $(INSTALLDIR)/sbin && ln -sf rc get_phy_status
 	@cd $(INSTALLDIR)/sbin && ln -sf rc get_phy_speed
 	@cd $(INSTALLDIR)/sbin && ln -sf rc GetPhyStatus
+ifeq ($(MERLINR_NAME), $(filter $(MERLINR_NAME), K3 R7900P EA6700))
+	@cd $(INSTALLDIR)/sbin && ln -sf rc Get_PhyStatus
+endif
 ifeq ($(HND_ROUTER),y)
 	@cd $(INSTALLDIR)/sbin && ln -sf rc set_ex53134_ctrl
 	@cd $(INSTALLDIR)/sbin && ln -sf rc set_phy_ctrl

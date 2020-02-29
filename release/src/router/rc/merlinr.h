@@ -44,7 +44,9 @@ extern void tm1900_check(void);
 extern void merlinr_set(const char *name, const char *value);
 extern int merlinr_toolbox(int argc, char **argv);
 #endif
+#if defined(EA6700)
+extern int GetPhyStatus2(int verbose);
 #endif
-
+#endif
 
 
