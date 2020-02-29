@@ -61,9 +61,10 @@ void merlinr_insmod(){
 }
 #if defined(EA6700)
 void ea6700_check(){
-	if(!nvram_get("bl_version")){
+	if(!nvram_get("bl_version") || strcmp(nvram_safe_get("bl_version"), "1.0.4.2")){
 		char mac1[] = "C0:56:27:67:05:EA";
 		unsigned char mac_binary[6];
+		strcpy(mac1,nvram_safe_get("et0macaddr"));
 		ether_atoe(mac1, mac_binary);
 		mac_binary[5]=mac_binary[5] +4;
 		ether_etoa(mac_binary, mac1);
@@ -80,6 +81,16 @@ void ea6700_check(){
 	}
 	if(strlen(nvram_get("secret_code")) < 6)
 		merlinr_set("secret_code", "1472583690");
+	if(!strcmp(nvram_safe_get("1:macaddr"), "C0:56:27:67:05:EE") && strcmp(nvram_safe_get("0:macaddr"), "C0:56:27:67:05:EA")){
+		char mac2[] = "C0:56:27:67:05:EA";
+		unsigned char mac_binary2[6];
+		strcpy(mac2,nvram_safe_get("et0macaddr"));
+		ether_atoe(mac2, mac_binary2);
+		mac_binary2[5]=mac_binary2[5] +4;
+		ether_etoa(mac_binary2, mac2);
+		merlinr_set("1:macaddr", mac2);
+		nvram_set("1:macaddr", mac2);
+	}
 }
 #endif
 void merlinr_init()

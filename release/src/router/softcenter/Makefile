@@ -72,6 +72,17 @@ install:
 	install -m 0755 scTW.json $(INSTALLDIR)/www/res
 	install -m 0755 Softcenter.asp $(INSTALLDIR)/www
 	install -m 0755 Softcenter_mount.asp $(INSTALLDIR)/www
+ifeq ($(or $(RTCONFIG_LANTIQ),$(RTCONFIG_QCA),$(RTCONFIG_RALINK)),y)
+	install -m 0755 sysinfo/lantiq/Tools_Sysinfo.asp $(INSTALLDIR)/www/
+else ifeq ($(K3),y)
+	install -m 0755 sysinfo/k3/Tools_Sysinfo.asp $(INSTALLDIR)/www
+else ifeq ($(or $(R8000P),$(R7900P)),y)
+	install -m 0755 sysinfo/r8000p/Tools_Sysinfo.asp $(INSTALLDIR)/www
+else ifeq ($(EA6700),y)
+	install -m 0755 sysinfo/ea6700/Tools_Sysinfo.asp $(INSTALLDIR)/www
+else
+	install -m 0755 sysinfo/Tools_Sysinfo.asp $(INSTALLDIR)/www
+endif
 
 clean:
 

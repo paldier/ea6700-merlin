@@ -47,6 +47,7 @@ var etherstate = "<% sysinfo("ethernet"); %>";
 var rtkswitch = "<% sysinfo("ethernet.rtk"); %>";
 var odmpid = "<% nvram_get("odmpid");%>";
 var ctf_fa = "<% nvram_get("ctf_fa_mode"); %>";
+var modelname = "<% nvram_get("modelname"); %>";
 overlib_str_tmp = "";
 overlib.isOut = true;
 function initial(){
@@ -225,6 +226,9 @@ function show_etherstate(){
 					port = "4";	// This is LAN 4 (RTL) from QTN
 					devicename = '<span class="ClientName">&lt;unknown&gt;</span>';
 				}
+			} else if (modelname == "EA6700") {
+				port++;		// Port starts at 0
+				if (port == "5") port = 0;	// Last port is WAN
 			}
 			if (port == "0") {
 				wan_array = [ "WAN", (line[7] & 0xFFF), state2, devicename];
