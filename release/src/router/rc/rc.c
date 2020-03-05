@@ -1284,7 +1284,7 @@ static const applets_t applets[] = {
 #ifdef RTCONFIG_ADTBW
 	{ "adtbw",			adtbw_main		},
 #endif
-#if defined(SBRAC1900P) || defined(SBRAC3200P) || defined(RTAC68U)
+#if defined(SBRAC1900P) || defined(SBRAC3200P)
 	{ "toolbox",			merlinr_toolbox		},
 #endif
 	{NULL, NULL}

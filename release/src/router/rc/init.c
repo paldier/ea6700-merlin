@@ -7157,8 +7157,8 @@ int init_nvram(void)
 		nvram_set_int("led_pwr_gpio", 6|GPIO_ACTIVE_LOW);
 #else
 		nvram_set_int("pwr_usb_gpio", 9|GPIO_ACTIVE_LOW);
-		nvram_set_int("btn_wps_gpio", 7|GPIO_ACTIVE_LOW);
 #endif
+		nvram_set_int("btn_wps_gpio", 7|GPIO_ACTIVE_LOW);
 		nvram_set_int("btn_rst_gpio", 11|GPIO_ACTIVE_LOW);
 		if (!is_ac66u_v2_series()) {
 #if !defined(EA6700)

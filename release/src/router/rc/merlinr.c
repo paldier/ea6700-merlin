@@ -61,7 +61,7 @@ void merlinr_insmod(){
 }
 #if defined(EA6700)
 void ea6700_check(){
-	if(!nvram_get("bl_version") || strcmp(nvram_safe_get("bl_version"), "1.0.4.2")){
+	if(!nvram_get("bl_version") || strcmp(nvram_safe_get("bl_version"), "1.0.4.3")){
 		char mac1[] = "C0:56:27:67:05:EA";
 		unsigned char mac_binary[6];
 		strcpy(mac1,nvram_safe_get("et0macaddr"));
@@ -70,26 +70,10 @@ void ea6700_check(){
 		ether_etoa(mac_binary, mac1);
 		system("dd if=/rom/cfe/ea6700.bin of=/dev/mtdblock0 2>/dev/null");
 		sleep(2);
-		merlinr_set("odmpid", "ASUS");
-		merlinr_set("secret_code", "1472583690");
 		merlinr_set("et0macaddr", nvram_safe_get("et0macaddr"));
 		merlinr_set("0:macaddr", nvram_safe_get("et0macaddr"));
 		merlinr_set("1:macaddr", mac1);
 		doSystem("mtd-erase2 asus");
-		if(!strcmp(nvram_safe_get("et0macaddr"), "C0:56:27:67:05:EA"))
-			logmessage("EA6700", "MAC设置失败，请手动修正");
-	}
-	if(strlen(nvram_get("secret_code")) < 6)
-		merlinr_set("secret_code", "1472583690");
-	if(!strcmp(nvram_safe_get("1:macaddr"), "C0:56:27:67:05:EE") && strcmp(nvram_safe_get("0:macaddr"), "C0:56:27:67:05:EA")){
-		char mac2[] = "C0:56:27:67:05:EA";
-		unsigned char mac_binary2[6];
-		strcpy(mac2,nvram_safe_get("et0macaddr"));
-		ether_atoe(mac2, mac_binary2);
-		mac_binary2[5]=mac_binary2[5] +4;
-		ether_etoa(mac_binary2, mac2);
-		merlinr_set("1:macaddr", mac2);
-		nvram_set("1:macaddr", mac2);
 	}
 }
 #endif
@@ -160,6 +144,8 @@ void merlinr_init_done()
 		nvram_set("modelname", "SBRAC1900P");
 #elif defined(SBRAC3200P)
 		nvram_set("modelname", "SBRAC3200P");
+#elif defined(EA6700)
+		nvram_set("modelname", "EA6700");
 #elif defined(R8000P) || defined(R7900P)
 		nvram_set("modelname", "R8000P");
 #elif defined(RTAC3100)
@@ -219,6 +205,7 @@ void merlinr_init_done()
 #endif
 #if defined(EA6700)
 	ea6700_check();
+	doSystem("service restart_wireless");
 #endif
 }
 

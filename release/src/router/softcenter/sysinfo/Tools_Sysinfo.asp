@@ -47,7 +47,6 @@ var etherstate = "<% sysinfo("ethernet"); %>";
 var rtkswitch = "<% sysinfo("ethernet.rtk"); %>";
 var odmpid = "<% nvram_get("odmpid");%>";
 var ctf_fa = "<% nvram_get("ctf_fa_mode"); %>";
-var modelname = "<% nvram_get("modelname"); %>";
 overlib_str_tmp = "";
 overlib.isOut = true;
 function initial(){
@@ -177,7 +176,7 @@ function show_etherstate(){
 	var line;
 	var wan_array;
 	var port_array= Array();
-	if (based_modelid == "RT-AC86U") {
+	if ((based_modelid == "RT-AC86U") || (based_modelid == "GT-AC5300") || (based_modelid == "GT-AC2900") || (based_modelid == "RT-AX3000") || (based_modelid == "RT-AX56U") || (based_modelid == "RT-AX58U") || (based_modelid == "RT-AX68U") || (based_modelid == "RT-AX86U") || (based_modelid == "RT-AX82U") || (based_modelid == "TUF-AX3000")) {
 		show_etherstate_hnd();
 		return;
 	} else if ((based_modelid == "RT-N16") || (based_modelid == "RT-AC87U")
@@ -226,9 +225,6 @@ function show_etherstate(){
 					port = "4";	// This is LAN 4 (RTL) from QTN
 					devicename = '<span class="ClientName">&lt;unknown&gt;</span>';
 				}
-			} else if (modelname == "EA6700") {
-				port++;		// Port starts at 0
-				if (port == "5") port = 0;	// Last port is WAN
 			}
 			if (port == "0") {
 				wan_array = [ "WAN", (line[7] & 0xFFF), state2, devicename];

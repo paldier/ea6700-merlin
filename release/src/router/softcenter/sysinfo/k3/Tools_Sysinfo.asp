@@ -214,11 +214,26 @@ function show_etherstate(){
 				}
 			}
 			port = line[1].replace(":","");
+			if (modelname == "K3") {
+			if (port > 3) {	//int ports[SWPORT_COUNT] = { 3, 1, 0, 2, 5 };
+				continue;
+			} else if (port == "3") {
+				wan_array = [ "WAN", (line[7] & 0xFFF), state2, devicename];
+				continue;
+			} else {
+				if (port == "0")
+					port_array.unshift(["LAN2 ", (line[7] & 0xFFF), state2, devicename]);
+				else if (port == "1")
+					port_array.unshift(["LAN1 ", (line[7] & 0xFFF), state2, devicename]);
+				else if (port == "2")
+					port_array.unshift(["LAN3 ", (line[7] & 0xFFF), state2, devicename]);
+			}
+			} else {
 			if (port == "8") {		// CPU Port
 				continue;
 			} else if ((based_modelid == "RT-AC56U") || (based_modelid == "RT-AC56S") || (based_modelid == "RT-AC88U") || (based_modelid == "RT-AC3100")) {
 				port++;		// Port starts at 0
-				if (port == "4") port = 0;	// Last port is WAN
+				if (port == "5") port = 0;	// Last port is WAN
 			} else if (based_modelid == "RT-AC87U") {
 				if (port == "4")
 					continue;	// This is the internal LAN port
@@ -226,9 +241,6 @@ function show_etherstate(){
 					port = "4";	// This is LAN 4 (RTL) from QTN
 					devicename = '<span class="ClientName">&lt;unknown&gt;</span>';
 				}
-			} else if (modelname == "EA6700") {
-				port++;		// Port starts at 0
-				if (port == "5") port = 0;	// Last port is WAN
 			}
 			if (port == "0") {
 				wan_array = [ "WAN", (line[7] & 0xFFF), state2, devicename];
@@ -236,12 +248,13 @@ function show_etherstate(){
 			} else if (port > 4) {
 				continue;	// Internal port
 			} else {
-				if (reversed) port = 4 - port;
+				if (reversed) port = 5 - port;
 			}
 			if (reversed)
 				port_array.unshift(["LAN "+ port, (line[7] & 0xFFF), state2, devicename]);
 			else
 				port_array.push(["LAN " + port, (line[7] & 0xFFF), state2, devicename]);
+			}
 		}
 	}
 	if (based_modelid == "RT-AC88U")
