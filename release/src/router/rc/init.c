@@ -7153,7 +7153,7 @@ int init_nvram(void)
 #endif  // RT4GAC68U
 #if defined(EA6700)
 		nvram_set_int("pwr_usb_gpio", 9);
-		//nvram_set_int("pwr_usb_gpio2", 10);
+		nvram_set_int("pwr_usb_gpio2", 10);
 		nvram_set_int("led_pwr_gpio", 6|GPIO_ACTIVE_LOW);
 #else
 		nvram_set_int("pwr_usb_gpio", 9|GPIO_ACTIVE_LOW);
